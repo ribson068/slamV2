@@ -24,7 +24,12 @@ def test_ajax(request):
     return render(request,'testajax.html')
 
 @login_required
+
 def Rajeev_ajax(request):
+    return render(request,'testajax.html')
+
+def Anil_ajax(request):
+
     return render(request,'testajax.html')
 
 
