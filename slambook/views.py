@@ -27,6 +27,12 @@ def test_ajax(request):
 def Rajeev_ajax(request):
     return render(request,'testajax.html')
 
+
+@login_required
+def base_k(request):
+    context={"display_text":"This is base Slam book page"}
+    return render(request,"base.html",context)
+
 # Create your views here.
 
 @login_required
