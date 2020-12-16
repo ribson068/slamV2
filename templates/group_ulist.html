@@ -1,0 +1,75 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+
+<style type="text/css"> 
+
+
+
+    </style> 
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<ul class="list-group">
+{% for c in groupuserslist%}
+
+  <li href={%url "index_t"%}?id={{c.pk}} id="list{{c.pk}}" class="list-group-item list-group-item-action  listtemplate">
+   <div class="d-flex w-100 justify-content-between" class="mainpage">
+      <h5 class="mb-1">{{c.user}}</h5>
+   <small>&nbsp;
+      &nbsp;&nbsp;
+  
+  
+      <a class="delete_user" id={{c.pk}}>
+      <svg class="bi bi-trash-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+</a>
+
+</small>
+    </div>
+  </li>
+{%endfor%}
+</ul>
+</div>
+<div class="create-button float-right container">
+<a href="#" class="templateq">
+<button type="button" class="btn btn-primary btn-circle btn-xl">Add User</button> 
+</div>
+</a>
+
+<script>
+ $(document).ready(function() {
+      $(".listtemplate").click(function() {
+        var id = $(this).attr('id')
+     $(this).toggleClass("active"); 
+     var lid=id.substring(4)
+});
+
+{% if view.kwargs%}
+    $(".templateq").click(function() {
+       var favorite = [];
+ $(".active .user").each(function() {
+    favorite.push($(this).val());
+});
+        pk={{view.kwargs.pk}}
+        location.href='{% url 'AddUserToGroup' view.kwargs.pk%}';
+        return false;
+    });
+{%endif%}    
+ 
+ 
+ $(".delete_user").click(function() {
+        var id = $(this).attr('id')
+        $.ajax({
+            type: "POST",
+            url: "{%url 'delete_user'%}",
+            data: { id:id},
+            success: function(response){
+                location.reload();
+            }
+        });
+        return false;
+    });
+
+});
+ 
+</script>
+{%endblock%}

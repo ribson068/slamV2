@@ -1,0 +1,162 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+{% load customtags %}
+<style type="text/css">
+
+
+
+    </style> 
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<div class="list-group">
+
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+         
+ Responded <span class="badge badge-success">{{clist.responded.count}}</span>
+
+        </button>
+      </h2>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+{% for response in clist.responded%}
+    
+        
+        
+        
+
+
+ <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start listtemplate  {%if c.isreadslam and not c.response%}slamreadnotresponded{%endif%}{%if c.response%}slamresponded{%endif%}">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Contributor: {{response.contrib.first_name}} {{response.contrib.last_name}}</h5>
+      
+      <small>{{response.date_time}}</small>
+       
+    </div>
+    <p class="mb-1"><h6 class="mb-1">{{c.gift}}</h6> {{c.mess}}</p>
+  
+     
+  </a>
+
+
+        
+        
+        
+    
+    {%endfor%}
+      </div>
+      </div>
+      </div>
+   
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Viewed 
+ <span class="badge badge-warning">{{clist.read.count}}</span>
+
+        </button>
+        </button>
+      </h2>
+    </div>
+    
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+    {% for r in clist.read%}
+    
+    <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start listtemplate  {%if c.isreadslam and not c.response%}slamreadnotresponded{%endif%}{%if c.response%}slamresponded{%endif%}">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Contributor: {{r.contrib.first_name}} {{r.contrib.last_name}}</h5>
+      
+      <small>{{r.date_time}}</small>
+       
+    </div>
+    <p class="mb-1"><h6 class="mb-1">{{c.gift}}</h6> {{c.mess}}</p>
+  
+     
+  </a>
+
+    
+   {%endfor%}
+      </div>
+  </div>
+</div>
+  
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Pending  <span class="badge badge-danger">{{clist.pending.count}}</span>
+
+        </button>
+        </button>
+      </h2>
+    </div>
+   
+   
+
+   
+
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+      <div class="card-body">
+         {% for p in clist.pending%}
+      <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start listtemplate  {%if c.isreadslam and not c.response%}slamreadnotresponded{%endif%}{%if c.response%}slamresponded{%endif%}">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Contributor: {{p.contrib.first_name}} {{p.contrib.last_name}}</h5>
+      
+      <small>{{p.date_time}}</small>
+       
+    </div>
+    <p class="mb-1"><h6 class="mb-1">{{c.gift}}</h6> {{c.mess}}</p>
+  
+     
+  </a>
+
+
+   {%endfor%}
+</div>
+</div>
+  
+</div>
+</div>
+
+<div class="create-button float-right container">
+<a href="{% url 'generategift'%}">
+<button type="button" class="btn btn-primary btn-circle btn-xl">Create</button> 
+</div>
+</a>
+
+
+<script>
+ $(document).ready(function() {
+      $(".listtemplate").click(function() {
+        var id = $(this).attr('id')
+    $(".listtemplate").removeClass('active')
+     $(this).addClass("active");
+     var lid=id.substring(4)
+    
+ });
+ 
+ $(".delete_cquestion").click(function() {
+        var id = $(this).attr('id')
+        $.ajax({
+            type: "POST",
+            url: "{%url 'deleteinbox'%}",
+            data: { id:id},
+            success: function(response){
+                location.reload();
+            }
+        });
+        return false;
+    });
+ 
+
+
+
+});
+</script>
+{%endblock%}

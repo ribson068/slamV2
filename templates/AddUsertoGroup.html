@@ -1,0 +1,134 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+
+<style type="text/css"> 
+
+
+
+    </style> 
+    
+    
+
+
+<form  method='POST'>    
+{% csrf_token %}
+<input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
+    <div class="input-group mb-2 ">
+  <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="Search user name" name="uservalue">
+  <div class="input-group-append">
+  <a href="{% url 'AddUserToGroup' %}">
+    <button type="button" class="btn btn-outline-secondary">Clear</button>
+  </a></div>
+  <div class="input-group-append">
+    <button type="submit" class="btn btn-outline-secondary">Search</button>
+  </div>
+</div>
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<div class="list-group">
+
+
+
+{% for c in clist%}
+
+{%ifnotequal c.pk user.pk %}
+
+  <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action listtemplate">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{c.username}}</h5>
+      <small>{{c.date_joined}}</small>
+      
+      <!--<div class="form-check">-->
+   <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+    <!--<label class="form-check-label" for="exampleCheck1">Click me to Add</label>-->
+  <!--</div>-->
+  
+    </div>
+    <p class="mb-1">{{c.first_name}} {{c.last_name}}</p>
+    <small>
+{{c.email}}
+    </small>
+     <input type='hidden' value='{{c.pk}}' id='{{c.pk}}' class="user" name='userid' >
+  </a>
+ 
+ 
+ 
+{% endifnotequal %}
+{%endfor%}
+</form>
+</div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Message to Recipient</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button  type="button" class="btn btn-primary">SEND SLAM!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<footer class="fixed-bottom ">
+<div class="container">
+
+
+
+
+<a href="#" class="templateq">
+<button  type="button" class="btn btn-success" style="width:49%" >Add User to Group</button>
+</a>
+<a href="{%url 'slamgroup'%}">
+<button type="button" class="btn btn-light" style="width:49%">Cancel</button>
+</a>
+</div>
+</footer>
+<script>
+
+ $(document).ready(function() {
+      $(".listtemplate").click(function() {
+        var id = $(this).attr('id')
+     $(this).toggleClass("active"); 
+     var lid=id.substring(4)
+ });
+
+    $(".templateq").click(function() {
+       var favorite = [];
+ $(".active .user").each(function() {
+    favorite.push($(this).val());
+});
+        pk={{view.kwargs.pk}}
+        $.ajax({
+            type: "POST",
+            url: "{%url 'addgroupuser'%}",
+            data: { id:favorite,pk:pk},
+            success: function(response){
+                location.href='{% url 'listgroupusers' view.kwargs.pk%}';
+            }
+        });
+        return false;
+    });
+
+
+});
+
+</script>
+{%endblock%}

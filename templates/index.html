@@ -1,0 +1,17 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+<div class="d-flex flex-column justify-content-center" 
+        style="height: 500px;">
+<div class="d-flex justify-content-center">
+<form method="post">
+{%csrf_token%}
+
+<input class="form-control col-sm-12" style="display:initial !important" type="text" placeholder="Template Name" value="{{template}}">
+
+<a href={% url 'charactertlist'%}><button type="button" class="btn btn-success col-sm-12">Select Template</button>
+</a></form>
+</div>
+</div>
+
+{%endblock%}

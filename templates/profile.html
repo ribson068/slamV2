@@ -1,0 +1,62 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+{% load static %}
+<div class="container">
+  
+  
+  <div class="card mainpage" style="width: 18rem;">
+  <img class="card-img-top" src=
+  {% ifequal user.pro_pic None %}
+    "{% static 'img/download.jpg'%}"
+{% else %}
+  <p>Image found</p>
+{% endifequal %}
+  
+   alt="Card image cap">
+  <div class="card-body">
+  
+
+{% ifequal user.pk usr.pk %}
+<form method="post">
+<div class="d-flex">
+    <div class="mr-auto">
+    {%csrf_token%}
+    <div class="form-row align-items-center">
+    <div class="col-auto">
+      <input type="text" class="form-control mb-2" value="{{usr.first_name|title}}" id="inlineFormInput">
+    </div>
+    
+    <div class="col-auto">
+      <input type="text" class="form-control mb-2" value="{{usr.last_name|title}}" id="inlineFormInput">
+    </div>
+</div>    
+    
+    </div>
+</div>
+  <p class="card-text"><b>userID:&nbsp</b>{{usr}}</p>
+    <p class="card-text"><b>Email:&nbsp</b>{{usr.email}}</p>
+    <p class="card-text"><b>DOB:&nbsp</b>{{ext.dob}}</p>
+    <p class="card-text"><a href="{% url 'change_password'%}">Change Password</a></p>
+  <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-2">Change</button>
+    </div>
+</form>
+{%else%}
+<div class="d-flex">
+
+    <div class="mr-auto"><h4 class="card-title">{{usr.first_name|title}}&nbsp{{usr.last_name|title}}</h4></div><div> <small class="text-muted">{{usr.date_joined|timesince}}</small></div>
+</div>
+    <p class="card-text"><b>userID:&nbsp</b>{{usr}}</p>
+    <p class="card-text"><b>Email:&nbsp</b>{{usr.email}}</p>
+    <p class="card-text"><b>DOB:&nbsp</b>{{ext.dob}}</p>
+    <p class="card-text"><a href="#">Change Password</a></p>
+  <p class="card-text"><small class="text-muted">Last login time:&nbsp{{usr.last_login|timesince}}</small></p>
+
+{%endifequal%}
+  </div>
+  </div>
+
+</div>
+
+{%endblock%}

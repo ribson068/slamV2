@@ -1,0 +1,61 @@
+{%extends "base.html"%}
+{% load static %}
+{%block base_block%}
+
+<script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('input,select,textarea').persist();
+			});
+		</script>
+<div class="d-flex flex-column justify-content-center mainpage" 
+        style="height: 500px;">
+<div class="d-flex justify-content-center">
+<form action="" method="post">
+{%csrf_token%}
+
+<label for="exampleFormControlSelect1">Please Select Receiver</label>
+<br>  
+<div class="form-check form-check-inline">
+
+<input class="form-control col-sm-12" style="display:initial !important" type="text" placeholder="Receiver Name" name='name' disabled {%if userid %}value="{{userid.username}}"{%endif%}>
+<input class="form-control col-sm-12" style="display:initial !important" type="hidden" placeholder="Receiver Name" name='receiver' {%if userid %}value="{{userid.pk}}"{%endif%}>
+</div>
+<div class="form-check form-check-inline">
+<a href="{%url 'searchuser'%}">
+  <button type="button" class="btn btn-primary col-sm-12"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+  <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+</svg> Search User </button></a>
+</div>
+<br>
+
+<label for="exampleFormControlSelect1">Please Enter a Gift name</label>
+<input class="form-control col-sm-12" style="display:initial !important" type="text" placeholder="Gift Name" name='giftname'>
+
+<div class="form-group">
+    <label for="exampleFormControlSelect1">Please select a template</label>
+    <select class="form-control" name="templateid" id="exampleFormControlSelect1">
+
+{%for t in template%}
+<option value="{{t.pk}}">{{t.cq_template}}</option>    
+{%endfor%}
+</select
+  </div>
+  
+  <div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="customSwitch1" name="includeme" checked>
+  <label class="custom-control-label" for="customSwitch1">Include <b>ME</b> as contributor <span style="color:red">&hearts;</span></label>
+</div>
+<br>
+<button type="submit" class="btn btn-primary col-sm-12">Generate Slam</button>
+</form>
+</div>
+</div>
+
+{% if generate %}
+<script>
+
+location.href='{% url 'listgift' generate%}'
+</script>
+{%endif%}
+{%endblock%}

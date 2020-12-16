@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    
+    <style>
+   .datepicker td, .datepicker th {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.85rem;
+}
+
+.datepicker {
+    margin-bottom: 3rem;
+}
+   body {
+  font-family: 'Ubuntu', sans-serif !important;
+}
+   
+   </style>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    
+    <form>
+    
+    <div class="container">
+  <label for="exampleFormControlTextarea3"><h3>Question</h3></label>
+  <textarea rows="2" class="form-control col-sm-6"  placeholder="Please enter the question"></textarea>
+
+  <select class="form-control col-sm-6" id="question_type" name="QuestionType">
+  <option value="0" selected>Question Type</option>
+  <option value="1">Short Answer</option>
+  <option value="2">Paragraph</option>
+  <option value="3">Radio Buttons</option>
+  <option value="4">Checkboxes</option>
+  <option value="5">Photo</option>
+  <option value="6">Date</option>
+  
+</select>
+
+
+<p id="question_options" >
+
+
+</p>
+</div>
+      </form>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script>
+  
+
+  $(document).ready(function(){
+  $('#question_type').change(
+    function() {
+        var question_type = $('#question_type option:selected').val();
+        switch (question_type) { 
+	case '1': 
+    	$("#question_options").empty()
+		$("#question_options").append("<textarea rows=\"2\" class=\"form-control col-sm-6\" name=\"answer\"  placeholder=\"Anwser text\"></textarea>");
+		break;
+	case '2': 
+    	$("#question_options").empty()
+		$("#question_options").append("<textarea rows=\"4\" class=\"form-control col-sm-6\" name=\"answer\"  placeholder=\"Long Anwser text\"></textarea>");
+		break;
+	case '3': 
+    	var str2='<p id="added_checkbox">\
+        <div class="form-check form-check-inline col-sm-6" style="padding-right:0px !important">\
+        <input class="form-check-input" type="radio" id="inlineCheckbox" value="option1">\
+        <input type="text" id="inlineCheckbox2" class="form-control" for="inlineCheckbox">\
+        </div>\
+        </p>\
+        <p id="add_button">\
+        <button type="button" class="btn btn-success col-sm-6">Add</button>\
+        </p>';
+        $("#question_options").empty()
+		$("#question_options").append(str2);
+		
+		var count2=1
+		$("#add_button").click(function(e){
+		  e.preventDefault();
+        
+        var v=$("#inlineCheckbox2").val()
+		c='<div class="form-check form-check-inline col-sm-6"  style="padding-right:0px !important">\
+		<input class="form-check-input" type="radio"  value="option1">\
+        <label class="form-check-label" for="inlineCheckbox1">'+v+'</label>'
+        if (v==''||count2>8) {
+        alert('Field is empty or max values 8 exceeded')
+        }
+        else{
+		$("#added_checkbox").append(c);
+		count2=count2+1
+		}
+});
+		break;
+	case '4':
+    	var str1='<p id="added_checkbox">\
+        <div class="form-check form-check-inline col-sm-6"  style="padding-right:0px !important">\
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox" value="option1">\
+        <input type="text" class="form-control" id="inlineCheckbox2" for="inlineCheckbox">\
+        </div>\
+        </p>\
+        <p id="add_button">\
+        <button type="submit" class="btn btn-success col-sm-6" id="add_checkbox">Add</button>\
+        </p>';
+        $("#question_options").empty()
+		$("#question_options").append(str1);
+		var count1=1
+		$("#add_button").click(function(e){
+		  e.preventDefault();
+        
+        var v=$("#inlineCheckbox2").val()
+		c='<div class="form-check form-check-inline col-sm-6"  style="padding-right:0px !important">\
+		<input class="form-check-input" type="checkbox"  value="option1">\
+        <label class="form-check-label" for="inlineCheckbox1">'+v+'</label>'
+        if (v==''||count1>8) {
+        alert('Field is empty or max values 8 exceeded')
+        }
+        else{
+		$("#added_checkbox").append(c);
+		count1=count1+1
+		}
+});
+		break;
+    case '5': 
+		$("#question_options").empty()
+		$("#question_options").append("<input type=\"file\" name=\"answer\" accept=\".jpg,.gif,.png\">");
+		break;
+    case '6': 
+		$("#question_options").empty()
+		$("#question_options").append("<div class=\"datepicker date input-group p-0 shadow-sm col-sm-6\"><input type=\"text\" placeholder=\"Select a date\" class=\"form-control py-4 px-4\" id=\"reservationDate\"><div class=\"input-group-append\"><span class=\"input-group-text px-4\"><i class=\"fa fa-calendar\"></i></span></div></div>");
+        
+        
+            // INITIALIZE DATEPICKER PLUGIN
+    $('.datepicker').datepicker({
+        clearBtn: true,
+        format: "dd/mm/yyyy"
+    });
+
+    $('#reservationDate').on('change', function () {
+        var pickedDate = $('input').val();
+        $('#pickedDate').html(pickedDate);
+    });
+        
+		break;
+	default:
+	$("#question_options").empty()
+	$("#question_options").append("<div class=\"alert alert-warning\" role=\"alert\">Please select Question Type from Dropdown</div>");
+    }
+        }
+);
+});
+  </script>
+  </body>
+</html>

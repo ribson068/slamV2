@@ -1,0 +1,39 @@
+{%extends "base.html"%}
+{% load static %}
+{%block base_block%}
+
+<script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('input,select,textarea').persist();
+			});
+		</script>
+<div class="d-flex flex-column justify-content-center mainpage" 
+        style="height: 500px;">
+<div class="d-flex justify-content-center">
+<form method="post">
+{%csrf_token%}
+
+<label for="exampleFormControlSelect1">Please Enter a slam name</label>
+<input class="form-control col-sm-12" style="display:initial !important" type="text" placeholder="Slam Name" name='slamname'>
+
+<div class="form-group">
+    <label for="exampleFormControlSelect1">Please select a template</label>
+    <select class="form-control" name="templateid" id="exampleFormControlSelect1">
+
+{%for t in template%}
+<option value="{{t.pk}}">{{t.cq_template}}</option>    
+{%endfor%}
+</select>
+  </div>
+<button type="submit" class="btn btn-primary col-sm-12">Generate Slam</button>
+</form>
+</div>
+</div>
+
+{% if generate %}
+<script>
+
+location.href='{% url 'listslam' generate%}'
+</script>
+{%endif%}
+{%endblock%}

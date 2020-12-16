@@ -1,0 +1,64 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+
+<style type="text/css"> 
+
+
+
+    </style> 
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<ul class="list-group">
+{% for c in clist%}
+
+  <li  id="list{{c.pk}}" class="list-group-item list-group-item-action  listtemplate">
+   <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{c.cquestion.cquestion}}</h5>
+  
+      <small class="delete_cquestion" id={{c.pk}}>
+      <svg class="bi bi-trash-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+
+
+</small>
+    </div>
+  </li>
+{%endfor%}
+</ul>
+</div>
+<footer class="fixed-bottom ">
+<div class="container">
+<a href="{% url 'charactertlist'%}" id="selecttemplate">
+<button type="button" class="btn btn-success" style="width:49%" >Ok</button>
+</a>
+<a href="{%url 'listcquestiont' view.kwargs.pk %}" id="selecttemplate">
+<button type="button" class="btn btn-warning" style="width:49%">Add Questions</button>
+</a>
+</div>
+</footer>
+<script>
+ $(document).ready(function() {
+      $(".listtemplate").click(function() {
+        var id = $(this).attr('id')
+    $(".listtemplate").removeClass('active')
+     $(this).addClass("active");
+     var lid=id.substring(4)
+    
+
+
+ });
+    $(".delete_cquestion").click(function() {
+        var id = $(this).attr('id')
+        $.ajax({
+            type: "POST",
+            url: "{%url 'delete_rcqt_t'%}",
+            data: { id:id},
+            success: function(response){
+                location.reload();
+            }
+        });
+        return false;
+    });
+});
+</script>
+{%endblock%}

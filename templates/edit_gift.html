@@ -1,0 +1,223 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+
+<style type="text/css"> 
+
+
+
+.listtemplate {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+    margin-bottom: 7px;
+    }
+
+
+    </style> 
+{% if not clist.contrib.response%}
+<form action='' method='POST'>    
+<input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<div class="list-group">
+{% for c in clist.gift%}
+
+
+
+  <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
+    <div class="d-flex w-100 justify-content-between">
+      {%ifequal c.cquestion|default:""|slice:"-1"  "?" %}
+      <h5 class="mb-1">{{c.cquestion}}</h5>
+      {%else%}
+      <h5 class="mb-1">{{c.cquestion}}?</h5>
+      {%endifequal%}
+       <input type='hidden' value='{{c.pk}}' id='{{c.pk}}' class="user" name='userid' >
+      
+    </div>
+    <p class="mb-1">
+    
+    <div class="custom-control custom-radio">
+  <input type="radio" id="customRadio1{{c.pk}}" name="customRadio{{c.pk}}" class="custom-control-input" value=1>
+  <label class="custom-control-label" for="customRadio1{{c.pk}}">Yes</label>
+</div>
+<div class="custom-control custom-radio">
+  <input type="radio" id="customRadio2{{c.pk}}" name="customRadio{{c.pk}}" class="custom-control-input" value=0>
+  <label class="custom-control-label" for="customRadio2{{c.pk}}">No</label>
+</div>
+    </p>
+     
+  </a>
+ 
+
+{%endfor%}
+</form>
+</div>
+</div>
+
+
+
+{%else%}
+
+
+
+<form action='' method='POST'>    
+<input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<div class="list-group">
+{% for c in clist.gift%}
+
+
+  <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
+    <div class="d-flex w-100 justify-content-between">
+      {%ifequal c.cquestion|default:""|slice:"-1"  "?" %}
+      <h5 class="mb-1">{{c.cquestion}}</h5>
+      {%else%}
+      <h5 class="mb-1">{{c.cquestion}}?</h5>
+      {%endifequal%}
+      
+      
+    </div>
+    <p class="mb-1">
+    
+    <div class="custom-control custom-radio">
+    {% if c.ans%}
+  <input type="radio" id="radio3" name="radioDisabled{{c.pk}}" id="customRadioDisabled" class="custom-control-input" checked disabled>
+  {%else%}
+  <input type="radio" id="radio3" name="radioDisabled{{c.pk}}" id="customRadioDisabled" class="custom-control-input" disabled>
+  {%endif%}
+  <label class="custom-control-label" for="customRadioDisabled{{c.pk}}">Yes</label>
+</div>
+    
+    
+    <div class="custom-control custom-radio">
+  {% if not c.ans%}
+  <input type="radio" id="radio3" name="radioDisabled{{c.pk}}" id="customRadioDisabled" class="custom-control-input" checked disabled>
+  {%else%}
+  <input type="radio" id="radio3" name="radioDisabled{{c.pk}}" id="customRadioDisabled" class="custom-control-input" disabled>
+  {%endif%}
+  <label class="custom-control-label" for="customRadioDisabled{{c.pk}}">No</label>
+</div>
+    </p>
+     
+  </a>
+ 
+
+{%endfor%}
+</form>
+</div>
+</div>
+
+
+{%endif%}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Message to Recipient</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id='sendSlam' type="button" class="btn btn-primary">Send RESPONSE!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<footer class="fixed-bottom ">
+<div class="container">
+
+{% if clist.contrib.response%}
+<button type="button" class="btn btn-light" style="width:49%">Response Sent</button>
+{%else%}
+<button  type="button" class="btn btn-success" style="width:49%" data-toggle="modal" data-target="#exampleModalCenter" >Send RESPONSE!</button>
+{%endif%}
+<a href="{%url 'index_t'%}" id="selecttemplate">
+<button type="button" class="btn btn-secondary" style="width:49%">Back</button>
+</a>
+</div>
+</footer>
+<script>
+ $(document).ready(function() {
+      $(".listtemplate").click(function() {
+        var id = $(this).attr('id')
+      
+     var lid=id.substring(4)
+ });
+
+
+ $("#sendSlam").click(function() {
+ 
+ 
+
+    var names = {};
+    $(':radio').each(function() {
+        names[$(this).attr('name')] = true;
+    });
+    var count = 0;
+    $.each(names, function() { 
+        count++;
+    });
+    if ($(':radio:checked').length === count) {
+        
+     
+     
+      var favorite = [];
+      var answer =  []
+ $(".user").each(function() {
+    favorite.push($(this).val());
+});
+
+$("input[type='radio']:checked").each(function() {
+   answer.push($(this).val());
+});
+if(favorite.length>0){
+
+var txt = $("#message-text").val(); 
+pk={{view.kwargs.pk}}
+        $.ajax({
+            type: "POST",
+            url: "{%url 'responsegift'%}",
+            data: { id:favorite,pk:pk,mess:txt,ans:answer},
+            success: function(response){
+                alert("Sent Successfully")
+                location.href='{% url 'inbox'%}';
+            }
+        });
+
+
+}
+else
+{
+alert("No question present")
+}   
+        
+        
+    }
+else
+{
+alert("Please answer all the questions")
+}
+
+ 
+
+        return false;
+    });
+
+
+});
+</script>
+{%endblock%}

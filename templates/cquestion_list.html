@@ -1,0 +1,154 @@
+{%extends "base.html"%}
+
+{%block base_block%}
+
+<style type="text/css"> 
+
+
+
+    </style> 
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<ul class="list-group">
+
+{% for c in clist.admin%}
+
+  <li  id="list{{c.pk}}" class="list-group-item list-group-item-action  listtemplate">
+   <div class="d-flex w-100 justify-content-between">
+   
+      <h5 class="mb-1">{{c.cquestion}}</h5>&nbsp;
+      <input type='hidden' value='{{c.pk}}' id='{{c.pk}}' class="user" name='userid' >
+      
+    </div>
+  </li>
+{%endfor%}
+
+
+{% for c in clist.normal%}
+
+  <li  id="list{{c.pk}}" class="list-group-item list-group-item-action  listtemplate">
+   <div class="d-flex w-100 justify-content-between">
+   
+      <h5 class="mb-1">{{c.cquestion}}</h5>&nbsp;
+      <input type='hidden' value='{{c.pk}}' id='{{c.pk}}' class="user" name='userid' >
+      <small>
+      <a href="{% url 'editcquestion' c.pk%}">
+     
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+  <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+</svg>&nbsp;&nbsp;
+</a>
+  
+  
+      <a class="delete_cquestion" id={{c.pk}}>
+      <svg class="bi bi-trash-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+
+
+</a>
+</small>
+    </div>
+  </li>
+{%endfor%}
+</ul>
+</div>
+<div class="create-button float-right container">
+
+<footer class="fixed-bottom ">
+<div class="container">
+
+
+{% if view.kwargs%}
+<a href="#" class="templateq">
+
+{% if view.kwargs.slam%}
+
+{% ifequal view.kwargs.slam '1'%}
+<button type="button" class="btn btn-success" style="width:49%" >Add to Slam</button>
+{%else%}
+<button type="button" class="btn btn-success" style="width:49%" >Add to Gift</button>
+{%endifequal%}
+{%else%}
+<button type="button" class="btn btn-success" style="width:49%" >Add to Template</button>
+{%endif%}
+</a>
+{%endif%}
+
+
+{% if view.kwargs.slam and view.kwargs.pk%}
+<a href="{% url 'scquestion' view.kwargs.pk view.kwargs.slam%}">
+<button type="button" class="btn btn-primary" style="width:49%">Create Questions</button>
+</a>
+{%endif%}
+{% if not view.kwargs.slam and view.kwargs.pk%}
+<a href="{% url 'rcquestion' view.kwargs.pk%}">
+<button type="button" class="btn btn-primary" style="width:49%" >Create Questions</button>
+{%endif%}
+{% if not view.kwargs.slam and not view.kwargs.pk%}
+<a href="{% url 'createcquestion'%}">
+<button type="button" class="btn btn-primary" style="width:49%" >Create Questions</button>
+{%endif%}
+
+
+</div>
+</footer>
+<script>
+ $(document).ready(function() {
+      $(".listtemplate").click(function() {
+        var id = $(this).attr('id')
+     $(this).toggleClass("active"); 
+     var lid=id.substring(4)
+});
+
+{% if view.kwargs%}
+    $(".templateq").click(function() {
+       var favorite = [];
+ $(".active .user").each(function() {
+    favorite.push($(this).val());
+});
+        pk={{view.kwargs.pk}}
+        $.ajax({
+            type: "POST",
+            {% if view.kwargs.slam%}
+            {% ifequal view.kwargs.slam '1'%}
+            url: "{%url 'addslam'%}",
+            {%else%}
+            url: "{%url 'addgift'%}",
+            {%endifequal%}
+            {%else%}
+            url: "{%url 'add_rcqt_t'%}",
+            {%endif%}
+            data: { id:favorite,pk:pk},
+            success: function(response){
+            {% if view.kwargs.slam%}
+            {% ifequal view.kwargs.slam '1'%}
+                location.href='{% url 'listslam' view.kwargs.pk%}';
+            {%else%}
+                location.href='{% url 'listgift' view.kwargs.pk%}';
+            {%endifequal%}
+            {%else%}
+                location.href='{% url 'rcqt' view.kwargs.pk%}';
+            {%endif%}
+            }
+        });
+        return false;
+    });
+{%endif%}    
+
+
+ $(".delete_cquestion").click(function() {
+        var id = $(this).attr('id')
+        $.ajax({
+            type: "POST",
+            url: "{%url 'delete_cquestion'%}",
+            data: { id:id},
+            success: function(response){
+                location.reload();
+            }
+        });
+        return false;
+    });
+    
+});
+</script>
+{%endblock%}
