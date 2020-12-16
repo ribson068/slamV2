@@ -23,6 +23,9 @@ from django.shortcuts import render, redirect
 def test_ajax(request):
     return render(request,'testajax.html')
 
+@login_required
+def Rajeev_ajax(request):
+    return render(request,'testajax.html')
 
 # Create your views here.
 
