@@ -23,20 +23,6 @@ from django.shortcuts import render, redirect
 def test_ajax(request):
     return render(request,'testajax.html')
 
-@login_required
-
-def Rajeev_ajax(request):
-    return render(request,'testajax.html')
-
-def Anil_ajax(request):
-
-    return render(request,'testajax.html')
-
-
-@login_required
-def base_k(request):
-    context={"display_text":"This is base Slam book page"}
-    return render(request,"base.html",context)
 
 # Create your views here.
 
@@ -528,8 +514,7 @@ def generate_gift(request,pk=None):
     if request.method=='POST':
         sl=Gifts(user=request.user,gift_name=request.POST['giftname'])
         request.session['receiver']=request.POST['receiver']
-        request.session['includeme']=request.POST['includeme']
-        sl.save()
+        request.session['includeme']=request.POST.get('includeme','')
         #request.session['gift_flag']=sl.pk
         t=RCTemplateCQuestions.objects.filter(user=request.user,ctemplate=request.POST['templateid'])
         for e in t:
@@ -580,7 +565,6 @@ class list_gift(ListView):
         tid=self.kwargs['pk']
         self.request.session['gift_flag']=tid
         print(self.request.session['receiver'])
-        print(self.request.session['includeme'])
         return Gift.objects.filter(user=self.request.user,gift=tid)
 
 @login_required
@@ -610,7 +594,7 @@ def send_gift(request):
     k=request.POST.getlist('pk',0)
     txt=request.POST.getlist('mess',0)
     receiver=request.session['receiver']
-    includeme=request.session['includeme']
+    includeme=request.session.get('includeme','')
     giftchart=GiftChart.objects.get_or_create(fr=request.user,re=User(pk=receiver),gift=Gifts(pk=k[0]),mess=txt[0])
     if c and k:
          for i in c:
