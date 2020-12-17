@@ -145,9 +145,9 @@
 {%else%}
 <button  type="button" class="btn btn-success" style="width:49%" data-toggle="modal" data-target="#exampleModalCenter" >Send RESPONSE!</button>
 {%endif%}
-<a href="{%url 'index_t'%}" id="selecttemplate">
-<button type="button" class="btn btn-secondary" style="width:49%">Back</button>
-</a>
+
+<button id="goback" type="button" class="btn btn-secondary" style="width:49%">Back</button>
+
 </div>
 </footer>
 <script>
@@ -194,7 +194,7 @@ pk={{view.kwargs.pk}}
             data: { id:favorite,pk:pk,mess:txt,ans:answer},
             success: function(response){
                 alert("Sent Successfully")
-                location.href='{% url 'inbox'%}';
+                location.href='{% url 'contributor'%}';
             }
         });
 
@@ -216,6 +216,14 @@ alert("Please answer all the questions")
 
         return false;
     });
+	
+	
+	$("#goback").click(function() {
+	
+	window.history.back();
+	
+	
+	});
 
 
 });
