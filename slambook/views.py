@@ -502,7 +502,7 @@ class Gift_Creator_Content(ListView):
     def get_queryset(self):
         tid=self.kwargs['pk']
         queryset = {'responded': Contributor.objects.filter(giftchart=tid,response=True),
-                    'read':Contributor.objects.filter(giftchart=tid,isreadgift=True),'pending':Contributor.objects.filter(giftchart=tid,isreadgift=False,response=False)}
+                    'read':Contributor.objects.filter(giftchart=tid,isreadcontrib=True),'pending':Contributor.objects.filter(giftchart=tid,isreadcontrib=False,response=False)}
         
         return queryset
 
@@ -735,10 +735,15 @@ class edit_gift(ListView):
     context_object_name="clist"
     def get_queryset(self):
         tid=self.kwargs['pk']
+        re=self.kwargs.get('re','')
+        print(re)
         k= Contributor.objects.get(pk=tid)
         l=GiftChart.objects.get(pk=k.giftchart.pk)
         m=Gift.objects.filter(gift=l.gift)
-        k.isreadslam=True
+        if re:
+            k.isreadreceiver=True
+        else:
+            k.isreadcontrib=True    
         k.save()
         if not k.response:
             queryset = {'chart':l, 
@@ -1028,6 +1033,17 @@ def change_password(request):
         'form': form
     
     }) 
+
+class Gift_receive_Content(ListView):
+    template_name="giftreceivercontent.html"
+    model=Contributor
+    context_object_name="clist"
+    def get_queryset(self):
+        tid=self.kwargs['pk']
+        queryset = {'responded': Contributor.objects.filter(giftchart=tid,response=True),
+                    'read':Contributor.objects.filter(giftchart=tid,isreadcontrib=True,isreadreceiver=True),'pending':Contributor.objects.filter(giftchart=tid,isreadcontrib=False,isreadreceiver=False,response=False)}
+        
+        return queryset
    
     
     

@@ -12,7 +12,7 @@
 {% for c in receiverlistbox%}
 
 
- <a href="{%url 'edit_gift' c.pk%}" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start listtemplate  {%if c.isreadslam and not c.response%}slamreadnotresponded{%endif%}{%if c.response%}slamresponded{%endif%}">
+ <a href="{%url 'edit_gift' 1 c.pk%}" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start listtemplate  {%if c.isreadslam and not c.response%}slamreadnotresponded{%endif%}{%if c.response%}slamresponded{%endif%}">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">Contributor : {{c.contrib}}</h5>
       

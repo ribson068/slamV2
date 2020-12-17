@@ -92,7 +92,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/giftcreatorcontent$',login_required(Gift_Creator_Content.as_view()),name="giftcreatorcontent"),
 
     #Gift Receiver
-    url(r'^giftreceiver/',login_required(GiftReceiver_view.as_view()),name="receiver"),
+    #url(r'^giftreceiver/',login_required(GiftReceiver_view.as_view()),name="receiver"),
 
     #Gift Contributor
     url(r'^giftcontributor/',login_required(gift_contributor.as_view()),name="contributor"),
@@ -201,6 +201,7 @@ urlpatterns = [
 
 
     url(r'^(?P<pk>\d+)/edit_gift/',login_required(edit_gift.as_view()),name="edit_gift"),
+    url(r'^(?P<re>\d+)/(?P<pk>\d+)/edit_gift/',login_required(edit_gift.as_view()),name="edit_gift"),
     url(r'^responsegift/',response_gift,name="responsegift"),
     
 

@@ -9,5 +9,9 @@ def responded_gifts(value):
 
 
 @register.filter
-def isread_gifts(value):
-    return Contributor.objects.filter(giftchart=value,isreadgift=True).count()
+def isread_contrib(value):
+    return Contributor.objects.filter(giftchart=value,isreadcontrib=True).count()
+
+@register.filter
+def isread_receiver(value):
+    return Contributor.objects.filter(giftchart=value,isreadreceiver=True).count()

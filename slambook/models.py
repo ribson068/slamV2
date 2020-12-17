@@ -139,7 +139,8 @@ class Contributor(models.Model):
     rmess=models.TextField(blank=True)
     is_to=models.BooleanField(default=True)
     response=models.BooleanField(default=False)
-    isreadgift=models.BooleanField(default=False)
+    isreadcontrib=models.BooleanField(default=False)
+    isreadreceiver=models.BooleanField(default=False)
 
 class GiftAnswer(models.Model):
     contrib=models.ForeignKey(Contributor,on_delete=models.CASCADE)
