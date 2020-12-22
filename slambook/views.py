@@ -513,6 +513,7 @@ def generate_gift(request,pk=None):
 
     if request.method=='POST':
         sl=Gifts(user=request.user,gift_name=request.POST['giftname'])
+        sl.save()
         request.session['receiver']=request.POST['receiver']
         request.session['includeme']=request.POST.get('includeme','')
         #request.session['gift_flag']=sl.pk
