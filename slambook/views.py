@@ -326,6 +326,11 @@ class list_user(ListView):
     template_name="list_user.html"
     context_object_name="clist"
     model=User
+    
+class list_group(ListView):
+    template_name="list_user.html"
+    context_object_name="glist"
+    model=Slam_Group
 
 
 @login_required
