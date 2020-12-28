@@ -326,11 +326,12 @@ class list_user(ListView):
     template_name="list_user.html"
     context_object_name="clist"
     model=User
-    
-class list_group(ListView):
-    template_name="list_user.html"
-    context_object_name="glist"
-    model=Slam_Group
+    def get_queryset(self):
+        u=User.objects.filter()
+        g=Slam_Group.objects.filter(user=self.request.user)
+        queryset={"user":u, "group":g}
+        print(queryset)
+        return queryset
 
 
 @login_required

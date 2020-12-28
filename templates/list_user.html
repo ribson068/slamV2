@@ -33,7 +33,7 @@
 <input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
 <div class="container" style="height: 400px;overflow-y: scroll;">
 <div class="list-group">
-{% for c in clist%}
+{% for c in clist.user%}
 
 {%ifnotequal c.pk user.pk %}
 
@@ -72,23 +72,15 @@
 <input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
 <div class="container" style="height: 400px;overflow-y: scroll;">
 <div class="list-group">
-{% for c in clist%}
-
-{%ifnotequal c.pk user.pk %}
+{% for c in clist.group%}
 
   <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{c.username}}</h5>
-      <small>{{c.date_joined}}</small>
+      <h5 class="mb-1">{{c.group_name}}</h5>
+      <small>{{c.date_time}}</small>
     </div>
-    <p class="mb-1">{{c.first_name}} {{c.last_name}}</p>
-    <small>
-{{c.email}}
-    </small>
-     <input type='hidden' value='{{c.pk}}' id='{{c.pk}}' class="user" name='userid' >
   </a>
  
-{% endifnotequal %}
 {%endfor%}
 </form> 
                 
