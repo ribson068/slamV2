@@ -165,4 +165,17 @@ class Group_User_Add(models.Model):
         def __str__(self):
             return str(self.group) +" - "+ str(self.user)
         
+class Type_Of_Notification(models.Model):
+    type_of_notif = models.CharField(max_length=32)
+        
+class Notifications(models.Model):
+    user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    fr=models.ForeignKey('auth.User',on_delete=models.CASCADE,related_name='Nfr')
+    to=models.ForeignKey(User,on_delete=models.CASCADE,related_name='Nto')
+    date_time=models.DateTimeField(auto_now_add=True, blank=True)
+    isread=models.BooleanField(default=False)
+    typeofNotification = models.ForeignKey(Type_Of_Notification,on_delete=models.CASCADE,related_name='NtypNotif')
+    hyperlink = models.TextField(blank=True)
+    
+    
 

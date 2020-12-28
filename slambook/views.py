@@ -8,7 +8,8 @@ from django.db.models import Q
 
 from .models import (CharacterTemplate,CQuestion,
                      RCTemplateCQuestions,Slams,Slam,GiftAnswer,
-                     SlamChart,Answer,UserExtension,Gifts,Gift,GiftChart,Slam_Group,Contributor,Group_User_Add)
+                     SlamChart,Answer,UserExtension,Gifts,Gift,GiftChart,
+                     Slam_Group,Contributor,Group_User_Add,Notifications)
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
@@ -746,7 +747,16 @@ class edit_gift(ListView):
 
         return queryset
     
-    
+
+class Notifications_view(ListView):
+    template_name="notifications.html"
+    context_object_name="clist"
+    model=Notifications
+    def get_queryset(self):
+        row = Notifications.objects.filter(fr=self.request.user)
+        print(row)
+        return row
+
 
     
     
