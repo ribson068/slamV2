@@ -1,14 +1,35 @@
 {%extends "base.html"%}
 
 {%block base_block%}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 <style type="text/css"> 
 
-
+.accordion .card-header:after {
+    font-family: 'FontAwesome';  
+    content: "\f068";
+    float: right; 
+}
+.accordion .card-header.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f067"; 
+}
 
     </style> 
     
-<form action='' method='POST'>    
+    
+    
+<div class="container">
+    <div id="accordion" class="accordion">
+        <div class="card mb-0">
+            <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                <a class="card-title">
+                    Users
+                </a>
+            </div>
+            <div id="collapseOne" class="card-body collapse" data-parent="#accordion" >
+                
+               <form action='' method='POST'>    
 <input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
 <div class="container" style="height: 400px;overflow-y: scroll;">
 <div class="list-group">
@@ -30,10 +51,53 @@
  
 {% endifnotequal %}
 {%endfor%}
-</form>
+</form> 
+                
+            </div>
+    </div>
 </div>
+    
 </div>
 
+    <div id="accordion" class="accordion">
+        <div class="card mb-0">
+            <div class="card-header collapsed" data-toggle="collapse" href="#collapseTwo">
+                <a class="card-title">
+                    Groups
+                </a>
+            </div>
+            <div id="collapseTwo" class="card-body collapse" data-parent="#accordion" >
+                
+               <form action='' method='POST'>    
+<input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
+<div class="container" style="height: 400px;overflow-y: scroll;">
+<div class="list-group">
+{% for c in clist%}
+
+{%ifnotequal c.pk user.pk %}
+
+  <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{c.username}}</h5>
+      <small>{{c.date_joined}}</small>
+    </div>
+    <p class="mb-1">{{c.first_name}} {{c.last_name}}</p>
+    <small>
+{{c.email}}
+    </small>
+     <input type='hidden' value='{{c.pk}}' id='{{c.pk}}' class="user" name='userid' >
+  </a>
+ 
+{% endifnotequal %}
+{%endfor%}
+</form> 
+                
+            </div>
+    </div>
+</div>
+    
+</div>
+</div>
 
 
 <!-- Modal -->
