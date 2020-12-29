@@ -30,7 +30,7 @@ from slambook.views import (test_ajax,Questions,base_t,index_t,character_tlist,
                             EditSlamGroup,list_gift,delete_gift,gift_contributor,
                             list_user_gift,send_gift,CreateSlamGroup,
                             Group_Users_list,add_user_group,delete_user,Receiver,
-                            Receiverbox,change_password,edit_gift,Notifications_view)
+                            Receiverbox,change_password,edit_gift,Notifications_view,send_slam_group)
 from usermanagement import urls
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views
@@ -80,6 +80,7 @@ urlpatterns = [
     #USER
     url(r'^(?P<pk>\d+)/listuser$',login_required(list_user.as_view()),name="listuser"),
     url(r'^sendslam/',send_slam,name="sendslam"),
+    url(r'^sendslamgroup/',send_slam_group,name="sendslamgroup"),
 
     #INBOX RESPONSE and SENT
     url(r'^inbox/',login_required(Inbox.as_view()),name="inbox"),

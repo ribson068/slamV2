@@ -328,7 +328,7 @@ class list_user(ListView):
     context_object_name="clist"
     model=User
     def get_queryset(self):
-        u=User.objects.filter()
+        u=User.objects.exclude(pk=self.request.user.pk)
         g=Slam_Group.objects.filter(user=self.request.user)
         queryset={"user":u, "group":g}
         print(queryset)
@@ -338,17 +338,25 @@ class list_user(ListView):
 @login_required
 @csrf_exempt
 def send_slam(request):
-    print(request.POST)
     c=request.POST.getlist('id[]',0)
+    g=request.POST.getlist('groupid[]',0)
     k=request.POST.getlist('pk',0)
     txt=request.POST.getlist('mess',0)
     if c and k:
          for i in c:
              SlamChart.objects.get_or_create(fr=request.user,to=User(pk=i),slam=Slams(pk=k[0]),mess=txt[0])
 
+    if g:
+        for l in g:
+             userlist= Group_User_Add.objects.filter(group=Slam_Group(pk=l))
+             for j in userlist:
+              SlamChart.objects.get_or_create(fr=request.user,to=User(pk=j.user.pk),slam=Slams(pk=k[0]),mess=txt[0])
+
+
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
+    
 #INBOX SEND RESPONSES
 class Inbox(ListView):
     template_name="inbox.html"
