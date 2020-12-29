@@ -43,6 +43,9 @@ def main_t(request):
     return render(request,"main.html")
 
 
+def addquestion(request):
+    return render(request,"main.html")
+
 
 def profile_view(request,pk):
     user=User.objects.get(pk=pk)
