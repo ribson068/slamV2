@@ -1,12 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{%extends "base.html"%}
 
-    <!-- Bootstrap CSS -->
-    
+{%block base_block%}
     <style>
    .datepicker td, .datepicker th {
     width: 2.5rem;
@@ -33,7 +27,7 @@
     <form>
     
     <div class="container">
-  <label for="exampleFormControlTextarea3"><h3>Question</h3></label>
+  <label for="exampleFormControlTextarea3" class='mainpage'><h3>Question</h3></label>
   <textarea rows="2" class="form-control col-sm-6"  placeholder="Please enter the question"></textarea>
 
   <select class="form-control col-sm-6" id="question_type" name="QuestionType">
@@ -166,5 +160,4 @@
 );
 });
   </script>
-  </body>
-</html>
+{%endblock%}

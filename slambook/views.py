@@ -43,8 +43,8 @@ def main_t(request):
     return render(request,"main.html")
 
 
-def addquestion(request):
-    return render(request,"main.html")
+def createquestion(request):
+    return render(request,"createquestion.html")
 
 
 def profile_view(request,pk):
@@ -145,6 +145,22 @@ class EditCQuestion(UpdateView):
     fields = ['cquestion']
     success_url =reverse_lazy('listcquestion')
 
+class CreateFQuestion(CreateView):
+    model=CQuestion
+    fields = ['cquestion']
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self,**kwargs):
+
+        if 'pk' in self.kwargs.keys() and 'slam' in  self.kwargs.keys():
+            return reverse_lazy('listcquestion',kwargs=self.kwargs)
+        elif 'pk' in self.kwargs.keys() and 'slam' not in self.kwargs.keys():
+            return reverse_lazy('listcquestiont',kwargs=self.kwargs)
+        else:
+            return reverse_lazy('listcquestion')
 
 class CreateCQuestion(CreateView):
     model=CQuestion
