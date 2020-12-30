@@ -72,7 +72,7 @@
 <input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
 <div class="container" style="height: 400px;overflow-y: scroll;">
 <div class="list-group">
-{% for c in clist.group%}
+{% for c in clist.group1%}
 
   <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
     <div class="d-flex w-100 justify-content-between">
@@ -83,6 +83,19 @@
   </a>
  
 {%endfor%}
+
+{% for c in clist.group2%}
+
+  <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{c.group.group_name}}</h5>
+      <small>{{c.group.date_time}}</small>
+    </div>
+    <input type='hidden' value='{{c.pk}}' class="group" name='groupid' >
+  </a>
+ 
+{%endfor%}
+
 </form> 
                 
             </div>

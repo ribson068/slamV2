@@ -333,7 +333,8 @@ class list_user(ListView):
     def get_queryset(self):
         u=User.objects.exclude(pk=self.request.user.pk)
         g=Slam_Group.objects.filter(user=self.request.user)
-        queryset={"user":u, "group":g}
+        gu=Group_User_Add.objects.filter(user=self.request.user)
+        queryset={"user":u, "group1":g, "group2":gu}
         print(queryset)
         return queryset
 

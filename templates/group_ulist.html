@@ -12,8 +12,10 @@
 {% for c in groupuserslist%}
 
   <li href={%url "index_t"%}?id={{c.pk}} id="list{{c.pk}}" class="list-group-item list-group-item-action  listtemplate">
+  <a href={%url "profile_name" c.user.pk %} id="list{{c.pk}}">
    <div class="d-flex w-100 justify-content-between" class="mainpage">
       <h5 class="mb-1">{{c.user}}</h5>
+  </a>
    <small>&nbsp;
       &nbsp;&nbsp;
   
