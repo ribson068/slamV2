@@ -265,7 +265,9 @@ class Group_view(ListView):
     context_object_name="slam_group"
     model=Slam_Group
     def get_queryset(self):
-        return Slam_Group.objects.filter(user=self.request.user)
+        queryset={'group1':Slam_Group.objects.filter(user=self.request.user),'group2':Group_User_Add.objects.filter(user=self.request.user)}
+    
+        return queryset
 
 class EditSlamGroup(UpdateView):
     model=Slam_Group
