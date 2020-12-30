@@ -1,0 +1,25 @@
+{%extends "base.html"%}
+{% load static %}
+{%block base_block%}
+
+<script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('input,select,textarea').persist();
+			});
+		</script>
+<div class="d-flex flex-column justify-content-center mainpage" 
+        style="height: 500px;">
+<div class="d-flex justify-content-center">
+<form >
+{%csrf_token%}
+
+<a href="{%url 'addquestion'%}"><button type="button" class="btn btn-primary col-12">General Question</button>
+</a>
+<a href="{%url 'addquestion'%}">
+<button type="button"  class="btn btn-warning col-12">Friend Question</button>
+</a>
+</form>
+</div>
+</div>
+
+{%endblock%}
