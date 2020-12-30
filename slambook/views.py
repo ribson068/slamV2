@@ -650,7 +650,12 @@ class list_user_gift(ListView):
     context_object_name="clist"
     model=User
     def get_queryset(self):
-        return User.objects.exclude(pk=self.request.session['receiver'])
+        g=Slam_Group.objects.filter(user=self.request.user)
+        gu=Group_User_Add.objects.filter(user=self.request.user)
+        u=User.objects.exclude(pk=self.request.session['receiver'])
+        queryset={"usr":u, "group1":g, "group2":gu}
+        print(queryset)
+        return queryset
 
 
 @login_required

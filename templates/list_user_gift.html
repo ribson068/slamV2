@@ -6,7 +6,15 @@
 
 <style type="text/css"> 
 
-
+.accordion .card-header:after {
+    font-family: 'FontAwesome';  
+    content: "\f068";
+    float: right; 
+}
+.accordion .card-header.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f067"; 
+}
 
     </style> 
     
@@ -26,7 +34,7 @@
 <input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
 <div class="container" style="height: 400px;overflow-y: scroll;">
 <div class="list-group">
-{% for c in clist%}
+{% for c in clist.usr%}
 
 {%ifnotequal c.pk user.pk %}
 
@@ -66,7 +74,7 @@
 <input type='hidden' value='{{view.kwargs.pk}}' name='slamid'>
 <div class="container" style="height: 400px;overflow-y: scroll;">
 <div class="list-group">
-{% for c in clist.group%}
+{% for c in clist.group1%}
 
   <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
     <div class="d-flex w-100 justify-content-between">
@@ -77,6 +85,20 @@
   </a>
  
 {%endfor%}
+
+
+{% for c in clist.group2%}
+
+  <a href="#" id="list{{c.pk}}" class="list-group-item list-group-item-action flex-column align-items-start  listtemplate">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{c.group.group_name}}</h5>
+      <small>{{c.group.date_time}}</small>
+    </div>
+    <input type='hidden' value='{{c.pk}}' class="group" name='groupid' >
+  </a>
+ 
+{%endfor%}
+
 </form> 
                 
             </div>
@@ -140,14 +162,20 @@
  $(".active .user").each(function() {
     favorite.push($(this).val());
 });
-if(favorite.length>0){
+
+var favoritegroup = [];
+ $(".active .group").each(function() {
+    favorite.push($(this).val());
+});
+
+if(favorite.length>0 || favoritegroup.length>0){
 
 var txt = $("#message-text").val(); 
 pk={{view.kwargs.pk}}
         $.ajax({
             type: "POST",
             url: "{%url 'sendgift'%}",
-            data: { id:favorite,pk:pk,mess:txt},
+            data: { id:favorite,groupid:favoritegroup,pk:pk,mess:txt},
             success: function(response){
                 location.href='{% url 'gifts'%}';
             }
