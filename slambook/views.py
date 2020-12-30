@@ -629,10 +629,12 @@ def delete_gift(request):
 def send_gift(request):
     print(request.POST)
     c=request.POST.getlist('id[]',0)
+    g=request.POST.getlist('groupid[]',0)
     k=request.POST.getlist('pk',0)
     txt=request.POST.getlist('mess',0)
     receiver=request.session['receiver']
     includeme=request.session.get('includeme','')
+    
     giftchart=GiftChart.objects.get_or_create(fr=request.user,re=User(pk=receiver),gift=Gifts(pk=k[0]),mess=txt[0])
     if c and k:
          for i in c:
@@ -640,6 +642,14 @@ def send_gift(request):
 
     if includeme=='on':
         Contributor.objects.get_or_create(contrib=request.user,giftchart=giftchart[0])
+    
+    
+    if g:
+        for l in g:
+             userlist= Group_User_Add.objects.filter(group=Slam_Group(pk=l))
+             for j in userlist:
+                 if j.user.pk!=int(receiver):
+                     Contributor.objects.get_or_create(contrib=User(pk=j.user.pk),giftchart=giftchart[0])
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
