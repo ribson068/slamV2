@@ -65,7 +65,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/createcquestion$',login_required(CreateCQuestion.as_view()),name="rcquestion"),
     url(r'^createquestion/', createquestion,name="createquestion"),
     #Friend Questions
-    url(r'^/createfquestion$',login_required(CreateFQuestion.as_view()),name="rfquestion"),
+    url(r'^createfquestion/$',login_required(CreateFQuestion.as_view()),name="rfquestion"),
     #RCQT
     url(r'^delete_RCQT_t/', delete_RCQT_t,name="delete_rcqt_t"),
     url(r'^(?P<pk>\d+)/rcqt$',login_required(RCQT_tlist.as_view()),name="rcqt"),
