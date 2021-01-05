@@ -43,8 +43,8 @@ def main_t(request):
     return render(request,"main.html")
 
 
-def addquestion(request):
-    return render(request,"main.html")
+def createquestion(request):
+    return render(request,"createquestion.html")
 
 
 def profile_view(request,pk):
@@ -145,6 +145,22 @@ class EditCQuestion(UpdateView):
     fields = ['cquestion']
     success_url =reverse_lazy('listcquestion')
 
+class CreateFQuestion(CreateView):
+    model=CQuestion
+    fields = ['cquestion']
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self,**kwargs):
+
+        if 'pk' in self.kwargs.keys() and 'slam' in  self.kwargs.keys():
+            return reverse_lazy('listcquestion',kwargs=self.kwargs)
+        elif 'pk' in self.kwargs.keys() and 'slam' not in self.kwargs.keys():
+            return reverse_lazy('listcquestiont',kwargs=self.kwargs)
+        else:
+            return reverse_lazy('listcquestion')
 
 class CreateCQuestion(CreateView):
     model=CQuestion
@@ -249,7 +265,9 @@ class Group_view(ListView):
     context_object_name="slam_group"
     model=Slam_Group
     def get_queryset(self):
-        return Slam_Group.objects.filter(user=self.request.user)
+        queryset={'group1':Slam_Group.objects.filter(user=self.request.user),'group2':Group_User_Add.objects.filter(user=self.request.user)}
+    
+        return queryset
 
 class EditSlamGroup(UpdateView):
     model=Slam_Group
@@ -330,27 +348,37 @@ class list_user(ListView):
     template_name="list_user.html"
     context_object_name="clist"
     model=User
-    
-class list_group(ListView):
-    template_name="list_user.html"
-    context_object_name="glist"
-    model=Slam_Group
+    def get_queryset(self):
+        u=User.objects.exclude(pk=self.request.user.pk)
+        g=Slam_Group.objects.filter(user=self.request.user)
+        gu=Group_User_Add.objects.filter(user=self.request.user)
+        queryset={"user":u, "group1":g, "group2":gu}
+        print(queryset)
+        return queryset
 
 
 @login_required
 @csrf_exempt
 def send_slam(request):
-    print(request.POST)
     c=request.POST.getlist('id[]',0)
+    g=request.POST.getlist('groupid[]',0)
     k=request.POST.getlist('pk',0)
     txt=request.POST.getlist('mess',0)
     if c and k:
          for i in c:
              SlamChart.objects.get_or_create(fr=request.user,to=User(pk=i),slam=Slams(pk=k[0]),mess=txt[0])
 
+    if g:
+        for l in g:
+             userlist= Group_User_Add.objects.filter(group=Slam_Group(pk=l))
+             for j in userlist:
+              SlamChart.objects.get_or_create(fr=request.user,to=User(pk=j.user.pk),slam=Slams(pk=k[0]),mess=txt[0])
+
+
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
+    
 #INBOX SEND RESPONSES
 class Inbox(ListView):
     template_name="inbox.html"
@@ -601,10 +629,12 @@ def delete_gift(request):
 def send_gift(request):
     print(request.POST)
     c=request.POST.getlist('id[]',0)
+    g=request.POST.getlist('groupid[]',0)
     k=request.POST.getlist('pk',0)
     txt=request.POST.getlist('mess',0)
     receiver=request.session['receiver']
     includeme=request.session.get('includeme','')
+    
     giftchart=GiftChart.objects.get_or_create(fr=request.user,re=User(pk=receiver),gift=Gifts(pk=k[0]),mess=txt[0])
     if c and k:
          for i in c:
@@ -612,6 +642,14 @@ def send_gift(request):
 
     if includeme=='on':
         Contributor.objects.get_or_create(contrib=request.user,giftchart=giftchart[0])
+    
+    
+    if g:
+        for l in g:
+             userlist= Group_User_Add.objects.filter(group=Slam_Group(pk=l))
+             for j in userlist:
+                 if j.user.pk!=int(receiver):
+                     Contributor.objects.get_or_create(contrib=User(pk=j.user.pk),giftchart=giftchart[0])
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
@@ -622,7 +660,12 @@ class list_user_gift(ListView):
     context_object_name="clist"
     model=User
     def get_queryset(self):
-        return User.objects.exclude(pk=self.request.session['receiver'])
+        g=Slam_Group.objects.filter(user=self.request.user)
+        gu=Group_User_Add.objects.filter(user=self.request.user)
+        u=User.objects.exclude(pk=self.request.session['receiver'])
+        queryset={"usr":u, "group1":g, "group2":gu}
+        print(queryset)
+        return queryset
 
 
 @login_required

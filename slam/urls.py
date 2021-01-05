@@ -35,7 +35,7 @@ from usermanagement import urls
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views
 
-
+from slambook.views import (createquestion,CreateFQuestion)
 from slambook.views import (response_gift)
 
 
@@ -43,7 +43,7 @@ from slambook.views import (response_gift)
 urlpatterns = [
      url(r'^test/', test_ajax,name='test'),
     url(r'^usermanagement/', include(urls)),
-    url(r'^addquestion/', Questions),
+    url(r'^addquestion/', Questions,name='addquestion'),
     url(r'^admin/', admin.site.urls),
     url(r'^base/', base_t),
     url(r'^createslam/',index_t,name="createslam"),
@@ -63,6 +63,9 @@ urlpatterns = [
     url(r'^createcquestion/', login_required(CreateCQuestion.as_view()),name="createcquestion"),
     url(r'^(?P<pk>\d+)/(?P<slam>\d+)/createcquestion$',login_required(CreateCQuestion.as_view()),name="scquestion"),
     url(r'^(?P<pk>\d+)/createcquestion$',login_required(CreateCQuestion.as_view()),name="rcquestion"),
+    url(r'^createquestion/', createquestion,name="createquestion"),
+    #Friend Questions
+    url(r'^createfquestion/$',login_required(CreateFQuestion.as_view()),name="rfquestion"),
     #RCQT
     url(r'^delete_RCQT_t/', delete_RCQT_t,name="delete_rcqt_t"),
     url(r'^(?P<pk>\d+)/rcqt$',login_required(RCQT_tlist.as_view()),name="rcqt"),
