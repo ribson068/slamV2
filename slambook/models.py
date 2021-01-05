@@ -167,6 +167,10 @@ class Group_User_Add(models.Model):
         
 class Type_Of_Notification(models.Model):
     type_of_notif = models.CharField(max_length=32)
+    notif_header_message = models.CharField(max_length=50,blank=True)
+    notif_main_message = models.CharField(max_length=100,blank=True)
+    def __str__(self):
+        return self.type_of_notif
         
 class Notifications(models.Model):
     user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
@@ -176,6 +180,7 @@ class Notifications(models.Model):
     isread=models.BooleanField(default=False)
     typeofNotification = models.ForeignKey(Type_Of_Notification,on_delete=models.CASCADE,related_name='NtypNotif')
     hyperlink = models.TextField(blank=True)
+    
     
     
 

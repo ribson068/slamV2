@@ -756,8 +756,7 @@ class Notifications_view(ListView):
     context_object_name="clist"
     model=Notifications
     def get_queryset(self):
-        row = Notifications.objects.filter(fr=self.request.user)
-        print(row)
+        row = Notifications.objects.filter(to=self.request.user)
         return row
 
 
