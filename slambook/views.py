@@ -709,9 +709,11 @@ class Group_Users_list(ListView):
     model=Group_User_Add
     def get_queryset(self):
         gid=self.kwargs['pk']
-        print(gid)
-        print(Group_User_Add.objects.filter(group=gid))
-        return Group_User_Add.objects.filter(group=gid)
+        g=Slam_Group.objects.filter(id=gid)
+        gu=Group_User_Add.objects.filter(group=gid)
+        queryset={"group":g, "groupusers":gu}
+        print(queryset)
+        return queryset
 
 class Add_User_to_Group(ListView):
     template_name="AddUsertoGroup.html"

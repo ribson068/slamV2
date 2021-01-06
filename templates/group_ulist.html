@@ -7,9 +7,20 @@
 
 
     </style> 
+
+{% for c in groupuserslist.group%}
+
+<h3 class="mb-1" align="center" font="bold" color="red">{{c.group_name}}</h3>
+<h5 class="mb-1" align="center">Total members # {{groupuserslist.groupusers.count}}</h5>
+
+{%endfor%}
+
+       
 <div class="container" style="height: 400px;overflow-y: scroll;">
+
+
 <ul class="list-group">
-{% for c in groupuserslist%}
+{% for c in groupuserslist.groupusers%}
 
   <li href={%url "index_t"%}?id={{c.pk}} id="list{{c.pk}}" class="list-group-item list-group-item-action  listtemplate">
   <a href={%url "profile_name" c.user.pk %} id="list{{c.pk}}">
