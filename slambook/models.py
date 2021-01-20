@@ -37,7 +37,7 @@ class CQuestion(models.Model):
         user=models.ForeignKey('auth.User',on_delete=models.CASCADE)
         cquestion=models.TextField()
         date_time=models.DateTimeField(auto_now_add=True, blank=True)
-        
+        typ=models.IntegerField()
         def __str__(self):
             return self.cquestion
         
